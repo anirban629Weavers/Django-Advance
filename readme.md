@@ -11,3 +11,7 @@ Commands - Django shell
 
 
     Suppose for testing purpose you've implemented a function and as you can't run it directly so you must have to run this in shell after importing that file like from [[home.utils import *]] and then run the function
+
+    Using shell insert data
+        student_dict={"name":"Rahul","age":"22","phone":"6846984894"}
+        Student.objects.create(**student_dict)

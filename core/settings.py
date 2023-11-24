@@ -42,7 +42,8 @@ INSTALLED_APPS = [
 
 EXTERNAL_APPS=[
     'accounts.apps.AccountsConfig',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'vege.apps.VegeConfig'
 ]
 
 INSTALLED_APPS=INSTALLED_APPS+EXTERNAL_APPS
@@ -127,6 +128,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS =[
     os.path.join(BASE_DIR, 'home/static'),
+    os.path.join(BASE_DIR, 'accounts/static'),
+    os.path.join(BASE_DIR, 'vege/static'),
 ]
 STATIC_ROOT="assets"
 
@@ -134,3 +137,6 @@ STATIC_ROOT="assets"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL='/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
