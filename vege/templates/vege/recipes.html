@@ -1,14 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-success" role="alert">
-    <h4 class="alert-heading">Well done!</h4>
-    <p>{{message}}</p>
-    <hr>
-</div>
-{% endfor %}
-{% endif %}
+
 <h2 class="text-center my-3">Add a Recipe</h2>
 <form class="col-6 mx-auto card p-3 shadow-lg" method="POST"
     enctype="multipart/form-data">
@@ -30,6 +22,17 @@
     </div>
     <button type="submit" class="btn btn-success">Add Recipe</button>
 </form>
+{% comment %} <div class="my-5">
+    <h1>Search Result</h1>
+    <form class="form-inline my-5 my-lg-0 ">
+        <div class="flex row">
+            <input class="form-control mr-sm-2 col-lg-4" type="search"
+                placeholder="Search" aria-label="Search" name="search">
+            <button class="btn btn-outline-success my-2 my-sm-0 col-lg-2 mt-3"
+                type="submit">Search</button>
+        </div>
+    </form>
+</div> {% endcomment %}
 {% if recipes %}
 <table class="table table-striped mt-5">
     <thead>
@@ -42,7 +45,6 @@
             <th scope="col">Edit</th>
         </tr>
     </thead>
-
     <tbody>
         {% for recipe in recipes %}
         <tr>
@@ -51,9 +53,11 @@
             <td>{{recipe.recipe_description}}</td>
             <td><img src="/media/{{recipe.recipe_image}}" style="height:100px;">
             </td>
-            <td><a href="/delete-recipe/{{recipe.id}}" class="btn btn-danger">Delete</a>
+            <td><a href="/delete-recipe/{{recipe.id}}"
+                    class="btn btn-danger">Delete</a>
             </td>
-            <td><a href="/update-recipe/{{recipe.id}}" class="btn btn-primary">Edit</a></td>
+            <td><a href="/update-recipe/{{recipe.id}}"
+                    class="btn btn-primary">Edit</a></td>
         </tr>
         {% endfor %}
     </tbody>
