@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from home.views import home,contact,about
-from vege.views import recipes,delete_recipe,update_recipe,login_user,register_user
+from vege.views import recipes,delete_recipe,update_recipe,login_user,register_user,logout_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,6 +14,7 @@ urlpatterns = [
     path('delete-recipe/<id>/', delete_recipe,name="delete-recipes"),
     path('update-recipe/<id>/', update_recipe,name="delete-recipes"),
     path('login/', login_user,name="login"),
+    path('logout/', logout_user,name="logout"),
     path('register/', register_user,name="register"),
 ]
 

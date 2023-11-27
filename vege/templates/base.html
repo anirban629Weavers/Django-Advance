@@ -46,6 +46,16 @@
                         Search
                     </button>
                 </form>
+                {% if user and user.is_authenticated %}
+                <ul class="navbar-nav ">
+                    <li class="nav-item mx-2">
+                        <span class="btn" >Hello, {{user}}</span>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="btn" href="/logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+                {% else %}
                 <ul class="navbar-nav ">
                     <li class="nav-item mx-2">
                         <a class="btn btn-primary" href="/login">Login</a>
@@ -54,12 +64,13 @@
                         <a class="btn btn-success" href="/register">Register</a>
                     </li>
                 </ul>
+                {% endif %}
             </div>
         </div>
     </nav>
     {% if messages %}
     {% for message in messages %}
-    <div class="alert alert-success container" role="alert">
+    <div class="alert alert-success container mt-3" role="alert">
         {% comment %} <h4 class="alert-heading">Well done!</h4> {% endcomment %}
         <p>{{message}}</p>
         <hr>

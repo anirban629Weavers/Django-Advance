@@ -1,11 +1,20 @@
 from django.shortcuts import render,redirect
 from .models import Recipe
 from django.contrib import messages
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,login,logout 
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+@login_required(login_url="/login/")
 def recipes(request):
     if request.method=="POST":
+        if not request.user.is_authenticated:
+            messages.warning(request,"Please Login First")
+            return redirect("login")
+            
+        
         data=request.POST
         
         recipe_name=data.get('recipe_name')
@@ -28,9 +37,12 @@ def recipes(request):
     return render(request, 'vege/recipes.html',context={'recipes':all_recipes})
 
 def update_recipe(request,id):
-    
     recipe=Recipe.objects.get(id=id)
     if request.method=="POST":
+        if not request.user.is_authenticated:
+          messages.warning(request,"Please Login First")
+          return redirect("login")
+            
         data=request.POST
         
         recipe_name=data.get('recipe_name')
@@ -50,6 +62,10 @@ def update_recipe(request,id):
     return render(request,'vege/update.html',context=context)
 
 def delete_recipe(request,id):
+    if not request.user.is_authenticated:
+        messages.warning(request,"Please Login First")
+        return redirect("login")
+
     recipe=Recipe.objects.get(id=id)
     recipe.delete()
     messages.success(request,"Recipe deleted successfully")
@@ -57,7 +73,36 @@ def delete_recipe(request,id):
 
 
 def login_user(request):
-    return render(request,'vege/login.html')
+    if request.method=='POST':
+        email=request.POST.get("email")
+        password=request.POST.get("password")            
+        print(email,password)
+        
+        if not User.objects.filter(email=email).exists():
+            messages.error(request,"User does not exist")
+            return redirect('login')
+        
+        # user=authenticate(request,username="a@a.com",password=password)
+        # ! Make the email and username same 
+        user=authenticate(request,username=email,password=password)
+        
+        if user is None:
+            messages.error(request,"Invalid Credentials")
+            return redirect('login')
+        else:
+            login(request,user)
+            messages.success(request,"Logged in successfully")
+            return redirect('recipes')
+                            
+    if request.user.is_authenticated:
+        return redirect("recipes")
+    else:
+        return render(request,'vege/login.html')
+
+def logout_user(request):
+    logout(request)
+    messages.success(request,"You're Logged out")
+    return redirect('recipes')
 
 def register_user(request):
     if request.method=="POST":
@@ -83,9 +128,12 @@ def register_user(request):
             )
             user.set_password(password)
             user.save()
+            login(request, user)
             messages.success(request,"User Registered Successfully")
             return redirect("/recipes")
 
 
-    
-    return render(request,'vege/register.html')
+    if request.user.is_authenticated:
+        return redirect("recipes")
+    else:
+        return render(request,'vege/register.html')
