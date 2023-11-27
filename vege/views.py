@@ -79,7 +79,7 @@ def login_user(request):
         print(email,password)
         
         if not User.objects.filter(email=email).exists():
-            messages.error(request,"User does not exist")
+            messages.warning(request,"User does not exist")
             return redirect('login')
         
         # user=authenticate(request,username="a@a.com",password=password)
@@ -87,7 +87,7 @@ def login_user(request):
         user=authenticate(request,username=email,password=password)
         
         if user is None:
-            messages.error(request,"Invalid Credentials")
+            messages.warning(request,"Invalid Credentials")
             return redirect('login')
         else:
             login(request,user)
@@ -117,7 +117,7 @@ def register_user(request):
         user=User.objects.filter(email=email)
         
         if user.exists():    
-            messages.error(request,"Email already registered")
+            messages.warning(request,"Email already registered")
             return render(request,'vege/register.html')
         else:
             user=User.objects.create(
