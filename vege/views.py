@@ -84,7 +84,7 @@ def login_user(request):
         
         # user=authenticate(request,username="a@a.com",password=password)
         # ! Make the email and username same 
-        user=authenticate(request,username=email,password=password)
+        user=authenticate(username=email,password=password)
         
         if user is None:
             messages.warning(request,"Invalid Credentials")
@@ -113,6 +113,11 @@ def register_user(request):
         username=data.get('username')
         email=data.get('email')
         password=data.get('password')
+        
+        if not first_name or not last_name or not username or not email or not password:
+            messages.warning(request,"Please provide all the details")
+            return render(request,'vege/register.html')
+            
         
         user=User.objects.filter(email=email)
         
